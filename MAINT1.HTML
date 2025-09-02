@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إخطار صيانة</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: 15% auto;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-auto">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">إخطار صيانة</h1>
+            <p class="text-gray-500 mb-6">يرجى ملء النموذج لتقديم طلب صيانة.</p>
+        </div>
+
+        <form id="maintenanceForm" class="space-y-6">
+            <div>
+                <label for="notificationNumber" class="block text-sm font-medium text-gray-700 mb-1">رقم الإخطار</label>
+                <input type="text" id="notificationNumber" name="notificationNumber" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="department" class="block text-sm font-medium text-gray-700 mb-1">القسم</label>
+                <select id="department" name="department" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>اختر القسم</option>
+                    <option value="يوتاكا">يوتاكا</option>
+                    <option value="الميكانيكال">الميكانيكال</option>
+                    <option value="السلة">السلة</option>
+                    <option value="الخط الرئيسي">الخط الرئيسي</option>
+                    <option value="التجهيزات">التجهيزات</option>
+                    <option value="المكابس">المكابس</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="machineName" class="block text-sm font-medium text-gray-700 mb-1">اسم الماكينة</label>
+                <select id="machineName" name="machineName" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>اختر القسم أولاً</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="machineCode" class="block text-sm font-medium text-gray-700 mb-1">كود الماكينة</label>
+                <input type="text" id="machineCode" name="machineCode" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="partName" class="block text-sm font-medium text-gray-700 mb-1">اسم الجزء</label>
+                <input type="text" id="partName" name="partName" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="problemDescription" class="block text-sm font-medium text-gray-700 mb-1">وصف المشكلة</label>
+                <textarea id="problemDescription" name="problemDescription" rows="4" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="maintenanceRequesterName" class="block text-sm font-medium text-gray-700 mb-1">اسم طالب الصيانة</label>
+                <input type="text" id="maintenanceRequesterName" name="maintenanceRequesterName" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            
+            <div>
+                <label for="responsiblePerson" class="block text-sm font-medium text-gray-700 mb-1">المسؤول عن الصيانة (MM2/ME2)</label>
+                <select id="responsiblePerson" name="responsiblePerson" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>اختر المسؤول</option>
+                    <option value="MM2">MM2</option>
+                    <option value="ME2">ME2</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="maintenanceType" class="block text-sm font-medium text-gray-700 mb-1">نوع الصيانة</label>
+                <select id="maintenanceType" name="maintenanceType" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>اختر نوع الصيانة</option>
+                    <option value="صيانة وقائية">صيانة وقائية</option>
+                    <option value="صيانة تصحيحية">صيانة تصحيحية</option>
+                    <option value="صيانة طارئة">صيانة طارئة</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+            </div>
+
+            <div class="flex space-x-4">
+                <div class="flex-1">
+                    <label for="notificationDate" class="block text-sm font-medium text-gray-700 mb-1">تاريخ الإخطار</label>
+                    <input type="date" id="notificationDate" name="notificationDate" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex-1">
+                    <label for="notificationTime" class="block text-sm font-medium text-gray-700 mb-1">وقت الإخطار</label>
+                    <input type="time" id="notificationTime" name="notificationTime" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <button type="submit" id="submitButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                إرسال الإخطار عبر واتساب
+            </button>
+        </form>
+
+        <div class="mt-8 text-center">
+            <a href="RECORDS.HTML" class="inline-block w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2">
+                عرض الإخطارات المسجلة
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal for success message -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="text-xl font-bold text-green-600 mb-3">تم الإرسال بنجاح!</h3>
+            <p id="modalMessage" class="text-gray-600">تم حفظ البيانات في قاعدة البيانات وسيتم توجيهك الآن إلى واتساب.</p>
+            <a id="whatsappLink" href="#" target="_blank" class="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                الذهاب إلى واتساب
+            </a>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Get elements from DOM
+        const form = document.getElementById('maintenanceForm');
+        const submitButton = document.getElementById('submitButton');
+        const successModal = document.getElementById('successModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const whatsappLinkElement = document.getElementById('whatsappLink');
+        const departmentSelect = document.getElementById('department');
+        const machineNameSelect = document.getElementById('machineName');
+        const machineCodeInput = document.getElementById('machineCode');
+
+        // Firebase Setup
+        // Check if Firebase config is provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- Replace the following Firebase config with your own when running outside Canvas ---
+        const localFirebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        // -------------------------------------------------------------------------------------
+
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : localFirebaseConfig;
+        
+        let db, auth, userId;
+
+        // Function to set up Firebase and authentication
+        async function setupFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Listen for authentication state changes
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        console.log('User signed in with UID:', userId);
+                    } else {
+                        console.log('No user signed in. Signing in anonymously...');
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (error) {
+                            console.error('Firebase Auth error:', error);
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error setting up Firebase:", error);
+            }
+        }
+
+        // The WhatsApp number to which the message will be sent
+        // IMPORTANT: Replace '966xxxxxxxxx' with the actual phone number, including the country code and without the '+' sign
+        const phoneNumber = '966xxxxxxxxx'; 
+
+        // Machine data for each department
+        const yutakaMachinesWithCodes = {
+            'عربة رفع الصاج 1': 'E-WMB-YUT-SKDCRT1',
+            'عربة رفع الصاج 2': 'E-WMB-YUT-SKDCRT2',
+            'مكبس يوتاكا 100 طن': 'E-WMB-YUT-PRS1',
+            'مكبس يوتاكا 200 طن': 'E-WMB-YUT-PRS2',
+            'ثناية يوتاكا': 'E-WMB-YUT-BENDER',
+            'المناول': 'E-WMB-YUT-TRANSFR',
+            'عربة الإسطمبات': 'E-WMB-YUT-MLDCART',
+            'سير خروج الكابينة 1': 'E-WMB-YUT-CONVY1',
+            'ونش يوتاكا': 'E-WMB-YUT-OVRCRAN',
+            'ماكينة برشمة الفريمات B': 'E-WMB-YUT-FCAULK',
+            'ماكينة البرشام الأتوماتيكي': 'E-WMB-YUT-AUTRVET',
+            'سير خط الكابينة الأيسر رقم 2': 'E-WMB-YUT-CONVY2',
+            'سير خط الكابينة الأيسر رقم 3': 'E-WMB-YUT-CONVY3',
+            'سير خط الكابينة الأيمن رقم 4': 'E-WMB-YUT-CONVY4',
+            'سير خط الكابينة الأيمن رقم 5': 'E-WMB-YUT-CONVY5'
+        };
+
+        const pressesMachinesWithCodes = {
+            'متقاب كاب 8 و 10 كيلو': 'E-WMB-PRS-DRILL1',
+            'الفيدر رقم 1': 'E-WMB-PRS-FEEDER1',
+            'الفيدر رقم 2': 'E-WMB-PRS-FEEDER2',
+            'الفيدر رقم 3': 'E-WMB-PRS-FEEDER3',
+            'الفيدر رقم (4)': 'E-WMB-PRS-FEEDER4',
+            'الفيدر رقم (5)': 'E-WMB-PRS-FEEDER5',
+            'الفيدر رقم (6)': 'E-WMB-PRS-FEEDER6',
+            'الفيدر رقم (7)': 'E-WMB-PRS-FEEDER7',
+            'ونش المكابس الكبيرة': 'E-WMB-PRS-OVERCRA',
+            'مكبس 160 طن 3': 'E-WMB-PRS-PR160-3',
+            'مكبس 300 طن 1': 'E-WMB-PRS-PR300-1',
+            'مكبس 300 طن 2': 'E-WMB-PRS-PR300-2',
+            'مكبس 300 طن 3': 'E-WMB-PRS-PR300-3',
+            'مكبس 400 طن 2': 'E-WMB-PRS-PR400-2',
+            'مكبس 110 طن رقم 1': 'E-WMB-PRS-PRS1110',
+            'مكبس 160 طن رقم 1': 'E-WMB-PRS-PRS1160',
+            'مكبس 200 طن': 'E-WMB-PRS-PRS1200',
+            'مكبس 250 طن': 'E-WMB-PRS-PRS1250',
+            'مكبس 160 طن (3)': 'E-WMB-PRS-PRS160-(3)',
+            'مكبس 110 طن رقم 2': 'E-WMB-PRS-PRS2110',
+            'مكبس 160 طن رقم 2': 'E-WMB-PRS-PRS2160',
+            'مكبس 260 طن': 'E-WMB-PRS260',
+            'مكبس 400 طن رقم 1': 'E-WMB-PRS400',
+            'مكبس 400 طن رقم 2': 'E-WMB-PRS400-2',
+            'ماكينة قلاووظ قاعدة الماتور': 'E-WMB-MEC-THREAD'
+        };
+        
+        const mechanicalMachinesWithCodes = {
+            'شاقة الصنفرة': 'E-WMB-MEC-CLEJIG',
+            'ماكينة برشمة ذراع الفرامل': 'E-WMB-MEC-ARMREV',
+            'مشحمة مكبس بليه كاب(1) والاأويل سيل': 'E-WMB-MEC-BCGREAS',
+            'مكبس كاب 2': 'E-WMB-MEC-CAY30-5',
+            'مشحمة مكبس الكونكتور': 'E-WMB-MEC-CGREAS',
+            'مكبس الكونكتور': 'E-WMB-MEC-COY30-5',
+            'مكبس كيس 2': 'E-WMB-MEC-CSY30-5',
+            'مشحمة ماكينة الكوكينج B': 'E-WMB-MEC-OSGRES1',
+            'مكبس بليه كاب (1) والأويل سيل': 'E-WMB-MEC-OSY30-5',
+            'مكبس التجميع الإبتدائي': 'E-WMB-MEC-PAY30-5',
+            'ماكينة الكوكينج': 'E-WMB-MEC-RCAULK',
+            'مفك هواء US-4 ربط غطاء البلية (1)': 'E-WMB-MEC-SCRDRV1',
+            'مفك هواء US-5 ربط عمود الفرامل (2)': 'E-WMB-MEC-SCRDRV2',
+            'مفك هواء US-5 ربط مسمار الفرامل (3)': 'E-WMB-MEC-SCRDRV3',
+            'جهاز إختبار الشافت END PLAY INSPETION': 'E-WMB-MEC-SHAFTTE'
+        };
+
+        const basketMachinesWithCodes = {
+            'ماكينة مسمار ماسك السلة (1)': 'E-WMB-BAS-AUSCRW1',
+            'ماكينة مسمار قاعدة السلة (2)': 'E-WMB-BAS-AUSCRW2',
+            'ماكينة تغذية مسمار ماسك السلة (3)': 'E-WMB-BAS-AUSCRW3',
+            'ماكينة تغذية مسمار قاعدة السلة (4)': 'E-WMB-BAS-AUSCRW4',
+            'ماكينة مسمار ربط حلقة الإتزان (5)': 'E-WMB-BAS-AUSCRW5',
+            'سير نزول السلة (2)': 'E-WMB-BAS-CONVY2',
+            'فرن السلة رقم (1)': 'E-WMB-BAS-OVEN1',
+            'فرن السلة رقم (2)': 'E-WMB-BAS-OVEN2',
+            'ماكينة لف الشيت': 'E-WMB-BAS-ROLLING',
+            'أساسنير قسم السلة1': 'E-WMB-BAS-SCISOR1',
+            'مفك هوائى US-4 ربط حامل الفلتر والمعطر 2': 'E-WMB-BAS-SCRDRV1',
+            'مفك هوائى US-4 ربط حامل الفلتر والمعطر3': 'E-WMB-BAS-SCRDRV2',
+            'مفك هوائى US-5 لربط مسمار قاعدة السلة 3': 'E-WMB-BAS-SCRDRV3',
+            'مفك هوائى US-5 لربط مسمار قاعدة السلة 4': 'E-WMB-BAS-SCRDRV4',
+            'ماكينة لحام حلقة الاتزان رقم (1)': 'E-WMB-BAS-SPNWLD1',
+            'ماكينة لحام حلقة الاتزان رقم (2)': 'E-WMB-BAS-SPNWLD2',
+            'وحدة المياة المالحة': 'E-WMB-BAS-SWATERU',
+            'شاقة اختبار لحام الارجون': 'E-WMB-BAS-TESJIG1',
+            'ماكينة لحام جسم السلة رقم 1': 'E-WMB-BAS-TIGWLD1',
+            'ماكينة لحام جسم السلة رقم 2': 'E-WMB-BAS-TIGWLD2',
+            'ماكينة تجعيد جسم السلة رقم 1': 'E-WMB-BAS-TRUNK1',
+            'ماكينة تجعيد جسم السلة رقم 2': 'E-WMB-BAS-TRUNK2'
+        };
+        
+        const preparationsMachinesWithCodes = {
+            'ماكينة إختبار تسريب الهواءB': 'E-WMB-SUB-AIRLEAK',
+            'مكبس تجميع باب DDM تورنيدو': 'E-WMB-SUB-DDMPS',
+            'متقاب قلوظة رجل الغسالة': 'E-WMB-SUB-DRILL',
+            'متقاب ثقب مروحة الغسالة': 'E-WMB-SUB-FANDRIL',
+            'مكبس 16 طن': 'E-WMB-SUB-JH21-16',
+            'ماكينة الطباعة رقم 1': 'E-WMB-SUB-PRINT1',
+            'مكبس هواء لضغط الرجل الخلفيه للغساله': 'E-WMB-SUB-PRS1',
+            'مكبس هواء لضغط باب الغساله الزجاجي': 'E-WMB-SUB-PRS2',
+            'مفك هوائى 5-US ربط مسمار الرجل بالصامولة': 'E-WMB-SUB-SCRDRV1',
+            'مفك هوائى 4-US لتجميع المروحة2': 'E-WMB-SUB-SCRDRV2',
+            'مفك هواء 4-US ربط المروحة (2)': 'E-WMB-SUB-SCRDRV3',
+            'مفك هواء 5-US ربط صامولة الصمام': 'E-WMB-SUB-SCRDRV4',
+            'شاقة تشحيم الشدادات 2': 'E-WMB-SUB-SPRGRJ2',
+            'شاقة تشحيم الشدادات': 'E-WMB-SUB-SPRGRJG',
+            'ماكينة قص شريط اللحام 4': 'E-WMB-SUB-TAPER4',
+            'ماكينة قص شريط اللحام 6': 'E-WMB-SUB-TAPER6',
+            'ماكينة قص شريط اللحام 7': 'E-WMB-SUB-TAPER7',
+            'سير تداول الفوم للمخزن': 'E-WMB-SUB-UTL-CONV1',
+            'الإضائة و المراوح و الشفاطات': 'E-WMB-UTL-LFVC'
+        };
+        
+        const mainLineMachinesWithCodes = {
+            'مفك هوائي 5-US ربط قاعدة الغسالة بالرجل1': 'E-WMB-ASL-SCRDRV1',
+            'مفك هوائي 4-US لربط الظلمبة 2': 'E-WMB-ASL-SCRDRV2',
+            'مفك هوائي 4-US لربط قاعدة الغسالة 3': 'E-WMB-ASL-SCRDRV3',
+            'مفك هوائي 4-US لتثبيت الصمام في علبة ا': 'E-WMB-ASL-SCRDRV4',
+            'مفك هوائي 4-US لتثبيت ذراع الامان (5)': 'E-WMB-ASL-SCRDRV5',
+            'مفك هوائي 4-US لربط غطاء كاب1 (6)': 'E-WMB-ASL-SCRDRV6',
+            'مفك هوائي UX-800S لربط عمود الفرامل (7)': 'E-WMB-ASL-SCRDRV7',
+            'مفك هوائي UD_700SD لربط مسمار الفرامل (8)': 'E-WMB-ASL-SCRDRV8',
+            'مفك هوائي 4-US لربط مسمارذراع الكاب 2': 'E-WMB-ASL-SCRDRV9',
+            'ماكينة الشمبر رقم 1': 'E-WMB-ASL-STRAP1',
+            'ماكينة الشمبر رقم 2': 'E-WMB-ASL-STRAP2',
+            'ماكينة الشمبر 3': 'E-WMB-ASL-STRAP3',
+            'ماكينة قص شريط اللحامB1': 'E-WMB-ASL-TAPER1',
+            'ماكينة قص شريط اللحامB2': 'E-WMB-ASL-TAPER2',
+            'ماكينة قص شريط اللحامB3': 'E-WMB-ASL-TAPER3',
+            'ماكينة قص شريط اللحام 5': 'E-WMB-ASL-TAPER5',
+            'برامة سلك 1 (أصفر +أخضر+بني)': 'E-WMB-ASL-TWSTER1',
+            'برامة سلك 2 (بنفسجي+أزرق +برتقالي+بني)': 'E-WMB-ASL-TWSTER2',
+            'برامة سلك 3 (رصاصي)': 'E-WMB-ASL-TWSTER3',
+            'برامة 4 سلك القيشة': 'E-WMB-ASL-TWSTER4',
+            'شاقة شد السير': 'E-WMB-ASL-TWSTER5',
+            'وحدة تغذية المياةB': 'E-WMB-ASL-WATERUN',
+            'جهاز إختبار الغساله1': 'E-WMB-ASL-WMTEST1',
+            'جهاز إختبار الغساله2': 'E-WMB-ASL-WMTEST2',
+            'جهاز إختبار الغساله3': 'E-WMB-ASL-WMTEST3',
+            'سير خط الحلة رقم 3': 'E-WMB-ASL-CONVY3',
+            'سير تجميع الحلة مع الكابينة رقم 4': 'E-WMB-ASL-CONVY4',
+            'سير تجميع الحلة مع الكابينة رقم 5': 'E-WMB-ASL-CONVY5',
+            'سير التجميع الرئيسي 7': 'E-WMB-ASL-CONVY7',
+            'سير إختبار الغسالات 8': 'E-WMB-ASL-CONVY8',
+            'أساسنير قسم التجهيزات': 'E-WMB-ASL-SCISOR2',
+            'مشحمة خط الحلة': 'E-WMB-ASL-Grease1',
+            'مشحمة خط السوستة': 'E-WMB-ASL-Grease2'
+        };
+
+        const machinesByDepartment = {
+            'يوتاكا': yutakaMachinesWithCodes,
+            'المكابس': pressesMachinesWithCodes,
+            'الميكانيكال': mechanicalMachinesWithCodes,
+            'السلة': basketMachinesWithCodes,
+            'التجهيزات': preparationsMachinesWithCodes,
+            'الخط الرئيسي': mainLineMachinesWithCodes
+        };
+
+        // Function to update the machine list based on the selected department
+        function updateMachines() {
+            const selectedDepartment = departmentSelect.value;
+            machineNameSelect.innerHTML = '<option value="" disabled selected>اختر الماكينة</option>';
+            machineCodeInput.value = '';
+
+            if (selectedDepartment && machinesByDepartment[selectedDepartment]) {
+                const machines = machinesByDepartment[selectedDepartment];
+                const machineNames = Object.keys(machines);
+                machineNames.forEach(machine => {
+                    const option = document.createElement('option');
+                    option.value = machine;
+                    option.textContent = machine;
+                    machineNameSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Function to update the machine code based on the machine name
+        function updateMachineCode() {
+            const selectedDepartment = departmentSelect.value;
+            const selectedMachine = machineNameSelect.value;
+            const departmentMachines = machinesByDepartment[selectedDepartment];
+            if (departmentMachines && departmentMachines[selectedMachine]) {
+                machineCodeInput.value = departmentMachines[selectedMachine];
+            } else {
+                machineCodeInput.value = '';
+            }
+        }
+        
+        // Add event listeners to the dropdowns
+        departmentSelect.addEventListener('change', updateMachines);
+        machineNameSelect.addEventListener('change', updateMachineCode);
+
+        // Add event listener for form submission
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.textContent = 'جاري الإرسال...';
+
+            try {
+                if (!db || !userId) {
+                    throw new Error("Firebase not initialized or user not authenticated.");
+                }
+
+                // Collect form data
+                const notificationData = {
+                    notificationNumber: document.getElementById('notificationNumber').value,
+                    department: document.getElementById('department').value,
+                    machineName: document.getElementById('machineName').value,
+                    machineCode: document.getElementById('machineCode').value,
+                    partName: document.getElementById('partName').value,
+                    problemDescription: document.getElementById('problemDescription').value,
+                    maintenanceRequesterName: document.getElementById('maintenanceRequesterName').value,
+                    responsiblePerson: document.getElementById('responsiblePerson').value,
+                    maintenanceType: document.getElementById('maintenanceType').value,
+                    notificationDate: document.getElementById('notificationDate').value,
+                    notificationTime: document.getElementById('notificationTime').value,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Save data to Firestore
+                const maintenanceCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/maintenanceRequests`);
+                await addDoc(maintenanceCollectionRef, notificationData);
+
+                // Build WhatsApp message
+                const message = `
+*إخطار صيانة جديد*
+
+- *رقم الإخطار:* ${notificationData.notificationNumber}
+- *القسم:* ${notificationData.department}
+- *اسم الماكينة:* ${notificationData.machineName}
+- *كود الماكينة:* ${notificationData.machineCode}
+- *اسم الجزء:* ${notificationData.partName}
+- *وصف المشكلة:* ${notificationData.problemDescription}
+- *اسم طالب الصيانة:* ${notificationData.maintenanceRequesterName}
+- *المسؤول عن الصيانة:* ${notificationData.responsiblePerson}
+- *نوع الصيانة:* ${notificationData.maintenanceType}
+- *تاريخ الإخطار:* ${notificationData.notificationDate}
+- *وقت الإخطار:* ${notificationData.notificationTime}
+`.trim();
+
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+                // Show success message with WhatsApp link
+                modalTitle.textContent = 'تم بنجاح!';
+                modalMessage.textContent = 'تم حفظ الإخطار في قاعدة البيانات. انقر على الزر أدناه للذهاب إلى واتساب.';
+                whatsappLinkElement.href = whatsappLink;
+                successModal.style.display = 'block';
+
+                form.reset();
+
+            } catch (error) {
+                console.error("Error submitting maintenance request:", error);
+                modalTitle.textContent = 'حدث خطأ!';
+                modalMessage.textContent = 'فشل في حفظ البيانات. يرجى المحاولة مرة أخرى.';
+                whatsappLinkElement.style.display = 'none'; // Hide the WhatsApp button on error
+                successModal.style.display = 'block';
+                setTimeout(() => {
+                    successModal.style.display = 'none';
+                    whatsappLinkElement.style.display = 'inline-block'; // Show it again for next use
+                }, 3000);
+            } finally {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.textContent = 'إرسال الإخطار عبر واتساب';
+            }
+        });
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == successModal) {
+                successModal.style.display = 'none';
+            }
+        }
+        
+        // Start Firebase setup on page load
+        window.onload = setupFirebase;
+    </script>
+</body>
+</html>
